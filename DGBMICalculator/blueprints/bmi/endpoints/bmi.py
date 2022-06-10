@@ -1,5 +1,6 @@
 import logging
 
+
 from flask import request
 
 import flask.scaffold
@@ -12,10 +13,12 @@ except ImportError:
     werkzeug.cached_property = werkzeug.utils.cached_property
     from flask_restplus import Resource
 
+
 from DGBMICalculator.blueprints.bmi.actions import create_bmi_category, update_bmi_category, delete_bmi_category
 from DGBMICalculator.blueprints.bmi.serializers import bmi_category
 from DGBMICalculator.blueprints.blueprint import api
 from DGBMICalculator.models.models import BMI
+
 
 log = logging.getLogger(__name__)
 
@@ -30,8 +33,9 @@ class BMICategoryCollection(Resource):
         """
         Returns list of BMI categories.
         """
+        logging.info(f'All BMI Categories requested')
         bmis = BMI.query.all()
-        return bmis
+        return bmis, 200
 
     @api.response(201, 'BMI successfully created.')
     @api.expect(bmi_category)
@@ -45,7 +49,7 @@ class BMICategoryCollection(Resource):
 
 
 @ns.route('/<int:id>')
-@api.response(404, 'Category not found.')
+@api.response(404, 'BMI Category not found.')
 class BMICategoryItem(Resource):
 
     @api.marshal_with(bmi_category)
@@ -79,8 +83,8 @@ class BMICategoryItem(Resource):
     @api.response(204, 'BMI Category successfully deleted.')
     def delete(self, id):
         """
-        Deletes blog category.
+        Deletes BMI category.
         """
-        delete_bmi_category(id=id)
+        delete_bmi_category(bmi_category_id=id)
         return None, 204
 

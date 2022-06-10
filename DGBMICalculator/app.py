@@ -3,7 +3,9 @@ import logging.config
 import os
 from flask import Flask, Blueprint
 from DGBMICalculator import settings
-from DGBMICalculator.blueprints.bmi.endpoints.bmi import ns as bmi_namespace
+from DGBMICalculator.blueprints.bmi.endpoints.bmi import ns as bmi_categories_namespace
+from DGBMICalculator.blueprints.bmi.endpoints.search import ns as bmi_category_search_namespace
+from DGBMICalculator.blueprints.bmi.endpoints.calculate import ns as bmi_calculate_namespace
 from DGBMICalculator.blueprints.blueprint import api
 from DGBMICalculator.models import db
 
@@ -28,7 +30,9 @@ def initialize_app(flask_app):
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
-    api.add_namespace(bmi_namespace)
+    api.add_namespace(bmi_categories_namespace)
+    api.add_namespace(bmi_category_search_namespace)
+    api.add_namespace(bmi_calculate_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
