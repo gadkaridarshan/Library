@@ -43,7 +43,7 @@ class BMICategorySearchInt(Resource):
         Returns a specific BMI category.
         """
         # round bmi_value to one digit after the decimal point
-        logging.info(f'BMI Value entered: {bmi_value}')
+        logging.debug(f'BMI Value: {bmi_value}')
         return calculate_bmi(bmi_value=bmi_value)
 
 
@@ -57,7 +57,7 @@ class BMICategorySearchFloat(Resource):
         Returns a specific BMI category.
         """
         # round bmi_value to one digit after the decimal point
-        logging.info(f'BMI Value entered: {bmi_value}')
+        logging.debug(f'BMI Value: {bmi_value}')
         bmi_value = float(bmi_value)
         return calculate_bmi(bmi_value=bmi_value)
 

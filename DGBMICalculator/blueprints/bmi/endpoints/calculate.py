@@ -36,7 +36,7 @@ class BMICategoryCollection(Resource):
         Creates a new BMI category.
         """
         people = request.json
-        logging.info(f'Input JSON: {people}')
+        logging.debug(f'Input JSON: {people}')
 
         # count the number of overweight people
         count_overweight = 0
@@ -50,7 +50,7 @@ class BMICategoryCollection(Resource):
                 count_overweight += 1
             people[idx]['bmi_category_name'] = bmi_category['bmi_category_name']
             people[idx]['health_risk'] = bmi_category['health_risk']
-        logging.info(people)
-        logging.info(count_overweight)
+        logging.debug(people)
+        logging.debug(count_overweight)
 
         return {'people': people, 'count_overweight': count_overweight}, 201
