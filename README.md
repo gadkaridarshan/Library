@@ -19,6 +19,8 @@ this can later be added to an automation build / testing / deployment pipeline
 11. When code is ran, the API documentation and manual testing can be viewed
 at http://localhost:8888/api
 
+![alt text](https://github.com/gadkaridarshan/DGBMICalculator/blob/main/APIDocumentation.png)
+
 python-packages:
    pip install -r requirements.txt
 
