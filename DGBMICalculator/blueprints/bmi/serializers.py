@@ -16,6 +16,17 @@ bmi_category = api.model(
 )
 
 
+bmi_category_add = api.model(
+    'BM Category Add/Update',
+    {
+        'bmi_category_name': fields.String(required=True, description='BMI Category name'),
+        'bmi_range_min': fields.Float(required=True, description='BMI Range Min'),
+        'bmi_range_max': fields.Float(required=True, description='BMI Range Max'),
+        'health_risk': fields.String(required=True, description='Health Risk')
+    }
+)
+
+
 bmi_category_search = api.model(
     'BM Category Info',
     {

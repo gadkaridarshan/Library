@@ -1,6 +1,8 @@
+"""Flask Restplus app module"""
 import logging.config
 
 import os
+from waitress import serve
 from flask import Flask, Blueprint
 from DGBMICalculator import settings
 from DGBMICalculator.blueprints.bmi.endpoints.bmi import ns as bmi_categories_namespace
@@ -9,40 +11,54 @@ from DGBMICalculator.blueprints.bmi.endpoints.calculate import ns as bmi_calcula
 from DGBMICalculator.blueprints.blueprint import api
 from DGBMICalculator.models import db
 
-app = Flask(__name__)
-logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
-logging.config.fileConfig(logging_conf_path)
-log = logging.getLogger(__name__)
+LOGGING_CONF_PATH = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
+logging.config.fileConfig(LOGGING_CONF_PATH)
+LOG = logging.getLogger(__name__)
 
 
-def configure_app(flask_app):
-    flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = settings.SQLALCHEMY_DATABASE_URI
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
-    flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = settings.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
-    flask_app.config['RESTPLUS_VALIDATE'] = settings.RESTPLUS_VALIDATE
-    flask_app.config['RESTPLUS_MASK_SWAGGER'] = settings.RESTPLUS_MASK_SWAGGER
-    flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
+class BMIServer:
+    """Class representing flask-restplus server for BMI"""
+    def __init__(self, config_level='prod'):
+        """Constructor"""
+        self.app = Flask(__name__)
+        self.setting = settings.CONFIG_BY_NAME[config_level]
+
+    def configure_app(self, flask_app):
+        """app configuration method"""
+        flask_app.config['SERVER_NAME'] = self.setting.FLASK_SERVER_NAME + \
+                                          ':' + str(self.setting.FLASK_SERVER_PORT)
+        flask_app.config['SQLALCHEMY_DATABASE_URI'] = self.setting.SQLALCHEMY_DATABASE_URI
+        flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = \
+            self.setting.SQLALCHEMY_TRACK_MODIFICATIONS
+        flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = \
+            self.setting.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
+        flask_app.config['RESTPLUS_VALIDATE'] = self.setting.RESTPLUS_VALIDATE
+        flask_app.config['RESTPLUS_MASK_SWAGGER'] = self.setting.RESTPLUS_MASK_SWAGGER
+        flask_app.config['ERROR_404_HELP'] = self.setting.RESTPLUS_ERROR_404_HELP
+
+    def initialize_app(self, flask_app):
+        """app initialization method"""
+        self.configure_app(flask_app)
+
+        blueprint = Blueprint('api', __name__, url_prefix='/api')
+        api.init_app(blueprint)
+        api.add_namespace(bmi_categories_namespace)
+        api.add_namespace(bmi_category_search_namespace)
+        api.add_namespace(bmi_calculate_namespace)
+        flask_app.register_blueprint(blueprint)
+
+        db.init_app(flask_app)
+
+    def main(self):
+        """app main execution method"""
+        self.initialize_app(self.app)
+        LOG.info(f'Starting flask server at http://{self.app.config["SERVER_NAME"]}/api/')
+        serve(
+            self.app,
+            host=self.setting.FLASK_SERVER_NAME,
+            port=self.setting.FLASK_SERVER_PORT
+        )
 
 
-def initialize_app(flask_app):
-    configure_app(flask_app)
-
-    blueprint = Blueprint('api', __name__, url_prefix='/api')
-    api.init_app(blueprint)
-    api.add_namespace(bmi_categories_namespace)
-    api.add_namespace(bmi_category_search_namespace)
-    api.add_namespace(bmi_calculate_namespace)
-    flask_app.register_blueprint(blueprint)
-
-    db.init_app(flask_app)
-
-
-def main():
-    initialize_app(app)
-    log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
-    app.run(debug=settings.FLASK_DEBUG)
-
-
-if __name__ == "__main__":
-    main()
+BMI_SERVER = BMIServer()
+BMI_SERVER.main()

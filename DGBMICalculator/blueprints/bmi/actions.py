@@ -1,5 +1,7 @@
 from DGBMICalculator.models import db
 from DGBMICalculator.models.models import BMI
+from sqlalchemy.orm.exc import NoResultFound
+import logging
 
 
 def create_bmi_category(data):
@@ -30,9 +32,11 @@ def update_bmi_category(bmi_category_id, data):
 
 def delete_bmi_category(bmi_category_id):
 
-    bmi = BMI.query.filter(BMI.id == bmi_category_id).one()
-
-    db.session.delete(bmi)
-    db.session.commit()
+    try:
+        bmi = BMI.query.filter(BMI.id == bmi_category_id).one()
+        db.session.delete(bmi)
+        db.session.commit()
+    except NoResultFound as nrf:
+        logging.info(f'Record with id: {bmi_category_id} is not in the system')
 
 

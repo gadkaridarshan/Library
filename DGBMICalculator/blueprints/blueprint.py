@@ -1,5 +1,6 @@
+"""Flask Restplus Blueprint module"""
 import logging
-import traceback
+from sqlalchemy.orm.exc import NoResultFound
 
 import flask.scaffold
 flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
@@ -11,10 +12,7 @@ except ImportError:
     werkzeug.cached_property = werkzeug.utils.cached_property
     from flask_restplus import Api
 
-from DGBMICalculator import settings
-from sqlalchemy.orm.exc import NoResultFound
-
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 api = Api(version='1.0', title='BMI Calculator API',
           description='BMI Calculator API built by Darshan Gadkari')
@@ -22,16 +20,14 @@ api = Api(version='1.0', title='BMI Calculator API',
 
 @api.errorhandler
 def default_error_handler(e):
+    """Function: Handles default errors"""
     message = 'An unhandled exception occurred.'
-    log.exception(message)
-
-    if not settings.FLASK_DEBUG:
-        return {'message': message}, 500
+    LOG.exception(f'message. {message}. {e}')
+    return {'message': message}, 500
 
 
 @api.errorhandler(NoResultFound)
 def database_not_found_error_handler(e):
-    """No results found in database"""
-    log.warning(traceback.format_exc())
-    return {'message': 'A database result was required but none was found.'}, 404
-
+    """Function: No results found in database"""
+    LOG.warning(f'A database record was not found. {e}')
+    return {'message': 'A database record was not found.'}, 404

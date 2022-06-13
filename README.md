@@ -1,1 +1,27 @@
-# DGBMICalculator
+# DGBMICalculator App
+
+Built by Darshan Gadkari
+
+App:
+1. Calculates the BMI (Body Mass Index) using Formula 1, BMI Category and Health risk
+from Table 1 of the person and add them as 3 new columns
+2. Count the total number of overweight people using ranges in the column BMI Category
+of Table 1
+3. Supports: Creation build, tests to make sure the code is working as expected and 
+this can later be added to an automation build / testing / deployment pipeline
+4. solid production-grade Python3 Program
+5. is a stand-alone backend application
+6. github url: 
+
+python-packages:
+   pip install -r requirements.txt
+
+install: python-packages
+
+tests:
+   pytest
+
+run:
+   python DGBMICalculator/app.py
+
+all: install tests run

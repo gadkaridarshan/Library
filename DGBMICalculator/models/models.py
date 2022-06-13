@@ -1,7 +1,9 @@
+"""Models module"""
 from DGBMICalculator.models import db
 
 
 class BMI(db.Model):
+    """Class for BMI model"""
 
     __tablename__ = 'BMI'
 
@@ -12,11 +14,12 @@ class BMI(db.Model):
     health_risk = db.Column(db.String(50))
 
     def __init__(self, bmi_category_name, bmi_range_min, bmi_range_max, health_risk):
+        """Constructor"""
         self.bmi_category_name = bmi_category_name
         self.bmi_range_min = bmi_range_min
         self.bmi_range_max = bmi_range_max
         self.health_risk = health_risk
 
     def __repr__(self):
+        """Representation method"""
         return '<BMI Category %r>' % self.bmi_category
-

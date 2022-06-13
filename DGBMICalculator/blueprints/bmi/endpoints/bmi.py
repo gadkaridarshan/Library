@@ -1,5 +1,5 @@
 import logging
-
+from sqlalchemy.orm.exc import NoResultFound
 
 from flask import request
 
@@ -15,7 +15,7 @@ except ImportError:
 
 
 from DGBMICalculator.blueprints.bmi.actions import create_bmi_category, update_bmi_category, delete_bmi_category
-from DGBMICalculator.blueprints.bmi.serializers import bmi_category
+from DGBMICalculator.blueprints.bmi.serializers import bmi_category,bmi_category_add
 from DGBMICalculator.blueprints.blueprint import api
 from DGBMICalculator.models.models import BMI
 
@@ -38,7 +38,7 @@ class BMICategoryCollection(Resource):
         return bmis, 200
 
     @api.response(201, 'BMI successfully created.')
-    @api.expect(bmi_category)
+    @api.expect(bmi_category_add)
     def post(self):
         """
         Creates a new BMI category.
@@ -59,7 +59,7 @@ class BMICategoryItem(Resource):
         """
         return BMI.query.filter(BMI.id == id).one()
 
-    @api.expect(bmi_category)
+    @api.expect(bmi_category_add)
     @api.response(204, 'BMI Category successfully updated.')
     def put(self, id):
         """
