@@ -11,7 +11,7 @@ of Table 1
 this can later be added to an automation build / testing / deployment pipeline
 4. solid production-grade Python3 Program
 5. is a stand-alone backend application
-6. github url: 
+6. github url: https://github.com/gadkaridarshan/DGBMICalculator
 7. Code is linted
 8. Code built using Flask Blueprints for good code structuring
 9. Code built using Flask-restplus to build REST APIs using best practices and minimal setup
