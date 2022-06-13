@@ -16,6 +16,8 @@ this can later be added to an automation build / testing / deployment pipeline
 8. Code built using Flask Blueprints for good code structuring
 9. Code built using Flask-restplus to build REST APIs using best practices and minimal setup
 10. setup.py provided for code packaging
+11. When code is ran, the API documentation and manual testing can be viewed
+at http://localhost:8888/api
 
 python-packages:
    pip install -r requirements.txt
