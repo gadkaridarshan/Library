@@ -55,7 +55,7 @@ at http://localhost:8888/api
 19. Migration has been built but not fully tested
 20. venv is used for packaging the python libraries
 
-![alt text](https://github.com/gadkaridarshan/Library/main/LibaryAPIDocumentation.png)
+![alt text](https://github.com/gadkaridarshan/Library/blob/main/LibraryAPIDocumentation.png)
 
 python-packages:
    pip install -r requirements.txt
