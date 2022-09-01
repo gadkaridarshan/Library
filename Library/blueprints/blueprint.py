@@ -1,4 +1,4 @@
-"""Flask Restplus Blueprint module"""
+"""Flask Restplus Blueprint module."""
 import logging
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -14,13 +14,13 @@ except ImportError:
 
 LOG = logging.getLogger(__name__)
 
-api = Api(version='1.0', title='BMI Calculator API',
-          description='BMI Calculator API built by Darshan Gadkari')
+api = Api(version='1.0', title='Library API',
+          description='Library API built by Darshan Gadkari')
 
 
 @api.errorhandler
 def default_error_handler(e):
-    """Function: Handles default errors"""
+    """Handle default errors."""
     message = 'An unhandled exception occurred.'
     LOG.exception(f'message. {message}. {e}')
     return {'message': message}, 500
@@ -28,6 +28,6 @@ def default_error_handler(e):
 
 @api.errorhandler(NoResultFound)
 def database_not_found_error_handler(e):
-    """Function: No results found in database"""
+    """No results found in database."""
     LOG.warning(f'A database record was not found. {e}')
     return {'message': 'A database record was not found.'}, 404

@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='DGBMICalculator',
+    name='Library',
     version='1.0.0',
-    description='BMI Calculator by Darshan Gadkari',
-    url='https://github.com/gadkaridarshan/DGBMICalculator.git',
+    description='Library Backend by Darshan Gadkari',
+    url='https://github.com/gadkaridarshan/Library.git',
     author='Darshan Gadkari',
 
     classifiers=[
@@ -15,7 +15,7 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
 
-    keywords='rest restful api flask swagger flask-restplus bmi calculator',
+    keywords='rest restful api flask swagger flask-restplus library',
 
     packages=find_packages(),
 
